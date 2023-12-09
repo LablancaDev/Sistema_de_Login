@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- MISMO EJERCICIO 7 PERO CONECTADO A LA BASE DE DATOS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de usuario</title>
+    <style>
+        
+    </style>
+    <script>
+        //comprobarUsuario(). Esta función está diseñada para realizar una solicitud AJAX al archivo comprueba_usuario.php para verificar si el nombre de usuario ya existe en la base de datos, 
+        // proporcionando retroalimentación en tiempo real al usuario sobre la disponibilidad del nombre de usuario mientras escribe.
+        // Función para comprobar si el nombre de usuario ya existe en la base de datos
+        function comprobarUsuario() {
+            // Crear una instancia del objeto XMLHttpRequest para realizar solicitudes al servidor
+            let peticion = new XMLHttpRequest();
+             // Definir la función que se ejecutará cuando cambie el estado de la solicitud
+            peticion.onreadystatechange = function() {
+                if (peticion.readyState == 4 && peticion.status == 200) {
+                     // Actualizar el contenido del elemento con el id "caja" con la respuesta del servidor
+                    document.getElementById("caja").innerHTML = peticion.responseText;
+                }
+            };
+            // Obtener el valor del campo de entrada de nombre de usuario
+            let usuario = "usuario=" + document.getElementById("usuario").value;
+             // Inicializar la solicitud AJAX al archivo comprueba_usuario.php
+            peticion.open("POST", "comprueba_usuario.php", true);
+            peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            // Enviar la solicitud con el valor del nombre de usuario al servidor
+            peticion.send(usuario);
+        }
+         // Función para registrar un nuevo usuario en la base de datos
+        function registrarUsuario() {
+              // Obtener el valor del campo de entrada de nombre de usuario
+            let usuario = document.getElementById("usuario").value;
+
+             // Crear una instancia del objeto XMLHttpRequest para realizar solicitudes al servidor
+            // Realizar petición AJAX para registrar el usuario
+            let xhr = new XMLHttpRequest();
+             // Definir la función que se ejecutará cuando cambie el estado de la solicitud
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                     // Mostrar una alerta con la respuesta del servidor (éxito o error)
+                    alert(xhr.responseText); 
+                }
+            };
+            // Inicializar la solicitud AJAX al archivo registrar_usuario.php
+            xhr.open("POST", "registrar_usuario.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            // Enviar la solicitud con el valor del nombre de usuario al servidor
+            xhr.send("usuario=" + usuario);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de usuario</h2>
+        <form>
+            <input type="text" id="usuario" placeholder="Ingrese el nombre de usuario" onkeyup="comprobarUsuario()"><!--Esta función está vinculada al evento onkeyup del campo de entrada (<input>), lo que significa que se activará cada vez que se presione y se suelte una tecla en ese campo.-->
+            <button type="button" onclick="registrarUsuario()">Registrar</button>
+        </form>
+         <!-- Contenedor para mostrar la respuesta del servidor -->
+        <div id="caja"></div>
+    </div>
+</body>
+</html>
+
+<!-- EXPLICACIÓN DEL CÓDIGO
+    Ahora, un resumen de lo que hace este código línea por línea:
+
+Se inicia un documento HTML (<!DOCTYPE html>) con la configuración básica del documento.
+Se define la estructura HTML que contiene un formulario con un campo de entrada (<input>) para el nombre de usuario y un botón (<button>) para registrar el usuario.
+Se incluye una sección de estilo (<style>) donde podrían definirse estilos CSS, aunque está vacía en este ejemplo.
+Se incluye un script JavaScript (<script>) que contiene dos funciones:
+comprobarUsuario(): Realiza una solicitud AJAX al archivo comprueba_usuario.php para verificar la disponibilidad del nombre de usuario en tiempo real mientras el usuario escribe.
+registrarUsuario(): Realiza una solicitud AJAX al archivo registrar_usuario.php para registrar el usuario en la base de datos cuando se hace clic en el botón "Registrar".
+El resultado de la solicitud AJAX se muestra dentro de un contenedor <div> con el id caja.
+En resumen, este código HTML y JavaScript permite a un usuario ingresar un nombre de usuario, verificar su disponibilidad en tiempo real mientras se escribe y registrar el usuario 
+en la base de datos al hacer clic en el botón "Registrar", mostrando mensajes de éxito o error en una alerta.
+
+
+
+
+
+
+    -->
